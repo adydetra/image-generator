@@ -1,4 +1,4 @@
-# Image Generator 🎨
+# Image Generator 🖼️
 
 A simple Python script to generate random PNG images with various patterns without any external dependencies.
 
