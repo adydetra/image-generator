@@ -12,9 +12,9 @@ import time
 from datetime import datetime
 
 # ======================
-# OUTPUT FOLDER (HARD-CODED)
+# OUTPUT FOLDER (DEFAULT, DAPAT DIOVERRIDE LEWAT CLI)
 # ======================
-OUTDIR = r"D:\Dewa\Nuxt\bdg-lights-shadow-photobooth\public\img\touchdesigner-result"
+DEFAULT_OUTDIR = r"D:\Dewa\Nuxt\bdg-lights-shadow-photobooth\public\img\touchdesigner-result"
 
 # ======================
 # Util: Tulis PNG (RGB 8-bit, no alpha)
@@ -270,12 +270,14 @@ def main():
                     help="Jenis pola.")
     ap.add_argument("--seed", type=int, default=None, help="Seed RNG (opsional).")
     ap.add_argument("--delay", type=float, default=5.0, help="Jeda detik antar export.")
+    ap.add_argument("--output", "-o", default=DEFAULT_OUTDIR, help="Folder tujuan output.")
     args = ap.parse_args()
 
     if args.count <= 0 or args.width <= 0 or args.height <= 0:
         raise SystemExit("count/width/height harus > 0.")
 
-    os.makedirs(OUTDIR, exist_ok=True)
+    outdir = os.path.abspath(args.output)
+    os.makedirs(outdir, exist_ok=True)
     rng = random.Random(args.seed if args.seed is not None else datetime.now().timestamp())
     pat_func = None if args.pattern == 'digits' else pick_pattern(args.pattern, rng)
 
@@ -290,13 +292,13 @@ def main():
         else:
             filename = f"img_{label}.png"
             pixels = pat_func(args.width, args.height, rng)
-        outpath = os.path.join(OUTDIR, filename)
+        outpath = os.path.join(outdir, filename)
         save_png(outpath, args.width, args.height, pixels)
         print(f"SAVED: {outpath}")
         if i < args.count and args.delay > 0:
             time.sleep(args.delay)
 
-    print(f"Done. Output folder: {OUTDIR}")
+    print(f"Done. Output folder: {outdir}")
 
 if __name__ == "__main__":
     main()
