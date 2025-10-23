@@ -64,7 +64,7 @@ def run_generation(params, log_callback, done_callback):
 def main():
     root = tk.Tk()
     root.title("Image Generator GUI")
-    root.geometry("520x500")
+    root.geometry("1280x720")
 
     input_frame = ttk.Frame(root, padding=16)
     input_frame.pack(fill=tk.X)
